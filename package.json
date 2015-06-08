@@ -8,6 +8,10 @@
 		"test-cov": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --require hook",
     "test-travis": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --require hook"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmtrs/restch.git"
+  },
   "keywords": [
     "rest",
     "http",
