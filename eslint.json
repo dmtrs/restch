@@ -1,0 +1,18 @@
+{
+    "ecmaFeatures" : {
+        "modules": true,
+        "classes": true
+    },
+    "env" : {
+        "mocha": true,
+        "node": true,
+        "browser": false,
+        "es6": true
+    },
+    "parser": "babel-eslint",
+    "rules": {
+        "strict": 0,
+        "quotes": [ 2, "single" ],
+        "no-underscore-dangle": false,
+    }
+}
