@@ -4,7 +4,9 @@
   "description": "Rest http client powered by fetch for browser and node",
   "main": "./src/index.js",
   "scripts": {
-    "test": "make mocha_test"
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha --require hook --reporter spec",
+		"test-cov": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --require hook",
+    "test-travis": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --require hook"
   },
   "keywords": [
     "rest",
