@@ -3,36 +3,51 @@ import { Restch } from '../src/index';
 should();
 
 describe('restch.use(fn)', function() {
-  it('should compose middleware', function(done){
+  it('should work with async function', function(done){
     var restch = new Restch();
     var calls = [];
-    
+
     restch.use(function *(next){
       calls.push(1);
       yield next;
-      calls.push(6);
-    });
-
-    restch.use(function (next){
-      calls.push(2);
-      return Promise.resolve(true);
+      calls.push(3);
     });
 
     restch.use(async function(next){
-      calls.push(3);
-      return await Promise.resolve(true);
-    });
-
-    restch.use(function *(next){
-      calls.push(4);
-      yield next;
-      calls.push(5);
+      calls.push(2);
+      await Promise.resolve(true);
     });
 
     restch.cb().then(function() {
       let error;
       try {
-        calls.should.deep.equal([ 1, 2, 3, 4, 5, 6 ]);
+        calls.should.deep.equal([ 1, 2, 3 ]);
+      } catch(err) {
+        error = err;
+      }
+      done(error);
+    });
+  })
+
+  it('should work return promise', function(done){
+    var restch = new Restch();
+    var calls = [];
+
+    restch.use(function *(next){
+      calls.push(1);
+      yield next;
+      calls.push(3);
+    });
+
+    restch.use(function(next){
+      calls.push(2);
+      return Promise.resolve(true);
+    });
+
+    restch.cb().then(function() {
+      let error;
+      try {
+        calls.should.deep.equal([ 1, 2, 3 ]);
       } catch(err) {
         error = err;
       }
