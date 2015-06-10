@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --require hook --reporter spec",
-		"test-cov": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --require hook",
+    "test-cov": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --require hook",
     "test-travis": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --require hook"
   },
   "repository": {
@@ -37,6 +37,7 @@
     "nock": "^2.3.0"
   },
   "dependencies": {
+    "composition": "^2.1.1",
     "debug": "^2.2.0"
   }
 }
