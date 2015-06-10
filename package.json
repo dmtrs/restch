@@ -32,7 +32,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-eslint": "^13.0.0",
     "grunt-mocha-test": "^0.12.7",
-    "istanbul": "^0.3.14",
+    "istanbul-harmony": "^0.3.12",
     "mocha": "^2.2.5",
     "nock": "^2.3.0"
   },
