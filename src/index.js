@@ -2,8 +2,12 @@ import { default as d } from 'debug';
 import { default as compose } from 'composition';
 let debug = d('restch');
 
-function *respond(next) {
-  yield next;
+async function respond(next) {
+  try {
+    return await Promise.resolve(next);
+  } catch(err) {
+    //do something
+  }
 }
 
 export class Restch {
@@ -27,7 +31,7 @@ export class Restch {
   }
 
   cb() {
-    let mw = [respond].concat(this.middleware);
+    let mw = this.middleware.concat([respond]);
     let fn = compose(mw);
     return fn.call(this);
   }
