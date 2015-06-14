@@ -30,6 +30,17 @@ module.exports = function(grunt) {
                 src: ['test/**/*.spec.js']
             }
         },
+        babel: {
+          options: {
+            sourceMap: true,
+            optional: ['asyncToGenerator']
+          },
+          dist: {
+            files: {
+              'dist/index.js': 'src/index.js'
+            }
+          }
+        }
     });
 
     // on watch events configure babel to only run on changed file
@@ -43,6 +54,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-babel');
 
     grunt.registerTask('default', ['watch']);
+    grunt.registerTask('build', ['babel']);
 };

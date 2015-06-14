@@ -1,4 +1,5 @@
 'use strict';
 require('babel/register')({
-    optional: ['asyncToGenerator']
+    optional: ['asyncToGenerator'],
+    sourceMaps: true
 });
