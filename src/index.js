@@ -1,14 +1,7 @@
 import { default as d } from 'debug';
-import { default as compose } from 'composition';
+import { default as compose } from 'koa-compose';
+import { default as co } from 'co';
 let debug = d('restch');
-
-async function respond(next) {
-  try {
-    return await Promise.resolve(next);
-  } catch(err) {
-    //do something
-  }
-}
 
 export class Restch {
   /**
@@ -30,9 +23,32 @@ export class Restch {
     return this;
   }
 
-  cb() {
-    let mw = this.middleware.concat([respond]);
-    let fn = compose(mw);
-    return fn.call(this);
+  cb(ctx) {
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      var begin = function* (next) {
+        yield next;
+        return resolve(this.response);
+      };
+
+      var req = function* () {
+        yield (async () => {
+          try {
+            this.response = await self.http(this.url, this.request);
+          } catch(err) {
+            reject(err);
+          }
+        })();
+      };
+
+      var mw = [begin].concat(self.middleware).concat([req]);
+
+      ctx = ctx || {
+        url: '',
+        request: {},
+        response: null
+      };
+      co.wrap(compose(mw)).call(ctx);
+    });
   }
 }
