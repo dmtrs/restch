@@ -36,14 +36,16 @@ describe('restch.use(fn)', function() {
       done(error);
     });
   });
+});
 
-  it('should allow middleware alter request, response', function(done) {
+describe('rest.cb(ctx)', function() {
+
+  it('should have access to context on resolve', function(done) {
     var fullUrl = 'http://localhost/foo/1';
     var req = { method: 'GET' };
     var data = { type: 'foo', id: 1 };
 
     let http = function(url, request) {
-      console.log('http call');
       url.should.be.equal(fullUrl);
       request.should.be.deep.equal(req);
       return Promise.resolve({ data: data });
@@ -60,9 +62,26 @@ describe('restch.use(fn)', function() {
     restch.cb().then(function(res) {
       res.should.be.deep.equal(data);
       done();
-    }).catch(function(err) {
-      console.log(err);
     });
+  });
+
+  it('should have access to context on reject', function(done) {
+    var response = { error: { something: 'went wrong' } };
+    let http = function() {
+      return Promise.reject(response);
+    };
+
+    var restch = new Restch(http);
+    restch.use(function *(next){
+      yield next;
+      this.response = this.response.error;
+    });
+
+    restch.cb().catch(function(err) {
+      err.should.be.deep.equal(response.error);
+      done();
+    });
+
   });
 
 });

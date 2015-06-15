@@ -28,6 +28,9 @@ export class Restch {
     return new Promise(function(resolve, reject) {
       var begin = function* (next) {
         yield next;
+        if (this.error) {
+          return reject(this.response);
+        }
         return resolve(this.response);
       };
 
@@ -36,7 +39,8 @@ export class Restch {
           try {
             this.response = await self.http(this.url, this.request);
           } catch(err) {
-            reject(err);
+            this.response = err;
+            this.error = true;
           }
         })();
       };
@@ -46,7 +50,8 @@ export class Restch {
       ctx = ctx || {
         url: '',
         request: {},
-        response: null
+        response: null,
+        error: false
       };
       co.wrap(compose(mw)).call(ctx);
     });
